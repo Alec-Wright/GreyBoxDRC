@@ -43,7 +43,9 @@ class AudioDataset(Dataset):
         self.p_red = (self.p_red*2) - 1
 
         data_length = self.inputs.shape[1]
+
         self.segment_length_samples = int(segment_length_seconds*self.fs)
+
         self.num_segments = int(len(self.p_red)*data_length / self.segment_length_samples)
         self.num_conds = len(self.p_red)
         self.segs_per_cond = self.num_segments//self.num_conds
@@ -82,8 +84,10 @@ class AudioDataModule(pl.LightningDataModule):
         self.datasets = {}
 
     def setup(self):
+
         def make_dataset(data_dir, set_name,  segment_length):
             return AudioDataset(data_dir, set_name, segment_length)
+
         self.datasets["train"] = make_dataset(self.data_dir, "train", self.segment_length_samples)
         self.datasets["val"] = make_dataset(self.data_dir, "val",  self.segment_length_samples_v)
         self.datasets["test"] = make_dataset(self.data_dir, "test",  self.segment_length_samples_v)
@@ -117,8 +121,10 @@ def load_config(args):
 def tbptt_split_batch(batch, warmup, split_size):
     total_steps = batch[0].shape[1]
     splits = [[x[:, :warmup, :] for i, x in enumerate(batch[0:2])]]
+    splits[0].append(batch[2])
     for t in range(warmup, total_steps, split_size):
         batch_split = [x[:, t: t + split_size, :] for i, x in enumerate(batch[0:2])]
+        batch_split.append(batch[2])
         splits.append(batch_split)
     return splits
 

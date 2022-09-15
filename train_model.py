@@ -1,17 +1,13 @@
-import torch.nn as nn
 import torch
-import torch.nn.functional as F
-from scipy.io.wavfile import write
 import argparse
 import pytorch_lightning as pl
-import re
 from pytorch_lightning.callbacks import EarlyStopping
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from torch.utils.tensorboard import SummaryWriter
 from Model import model_configs
 from Model import CompModel
-from DataFuncs import ConditionedDataLoader
+import ConditionedDataLoader
 
 prsr = argparse.ArgumentParser(
     description='''This script trains a hybrid neural network and DSP model to emulate an analog compressor''')
@@ -55,7 +51,7 @@ if __name__ == "__main__":
     # Create trainer object
     trainer = pl.Trainer(max_epochs=50, val_check_interval=0.25,
                          callbacks=[early_stopping, checkpoint_callback], logger=logger, gpus=gpus,
-                         num_sanity_val_steps=-1)
+                         num_sanity_val_steps=0)
     # Train model
     trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 

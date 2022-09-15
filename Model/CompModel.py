@@ -1,17 +1,12 @@
 import torch
-import torch.nn as nn
 import pytorch_lightning as pl
 import matplotlib.pyplot as plt
 import loss_funcs
-from DataFuncs import ConditionedDataLoader
+import ConditionedDataLoader
 
 from Model.StaticComp import StaticComp
 from Model.GainSmooth import GainSmooth
 from Model.MakeUp import MakeUp
-
-from scipy.io.wavfile import write
-import math
-import copy
 
 
 class CompModel(pl.LightningModule):
