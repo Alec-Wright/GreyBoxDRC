@@ -13,8 +13,8 @@ class MakeUp(pl.LightningModule):
         if self.type == 'Static':
             self.model = StaticAmp()
 
-    def forward(self, x, cond1=None, cond2=None):
-        return self.model(x, cond1, cond2)
+    def forward(self, x):
+        return self.model(x)
 
     def reset_state(self, batch_size):
         self.model.reset_state(batch_size)

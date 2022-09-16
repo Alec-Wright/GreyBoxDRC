@@ -1,0 +1,12 @@
+name: GreyBoxDRC
+channels:
+  - pytorch
+  - conda-forge
+dependencies:
+  - cudnn
+  - cudatoolkit
+  - pytorch
+  - torchaudio
+  - pytorch-lightning
+  - matplotlib
+  - scipy
